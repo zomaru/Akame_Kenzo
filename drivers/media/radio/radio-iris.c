@@ -3806,6 +3806,7 @@ static int iris_vidioc_s_ext_ctrls(struct file *file, void *priv,
 	case V4L2_CID_PRIVATE_IRIS_SET_SPURTABLE:
 		memset(&spur_tbl_req, 0, sizeof(spur_tbl_req));
 		data = (ctrl->controls[0]).string;
+<<<<<<< HEAD
 		if (copy_from_user(&bytes_to_copy, &((ctrl->controls[0]).size),
 					sizeof(bytes_to_copy))) {
 			retval = -EFAULT;
@@ -3818,6 +3819,11 @@ static int iris_vidioc_s_ext_ctrls(struct file *file, void *priv,
 		}
 		spur_tbl_req.mode = tmp_buf[0];
 		spur_tbl_req.no_of_freqs_entries = tmp_buf[1];
+=======
+		bytes_to_copy = (ctrl->controls[0]).size;
+		spur_tbl_req.mode = data[0];
+		spur_tbl_req.no_of_freqs_entries = data[1];
+>>>>>>> 498ae988d894... radio-iris: check argument values before copying the data
 
 		if (((spur_tbl_req.no_of_freqs_entries * SPUR_DATA_LEN) !=
 					bytes_to_copy - 2) ||
