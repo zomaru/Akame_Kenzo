@@ -3824,6 +3824,9 @@ static int iris_vidioc_s_ext_ctrls(struct file *file, void *priv,
 		spur_tbl_req.mode = data[0];
 		spur_tbl_req.no_of_freqs_entries = data[1];
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 498ae988d894... radio-iris: check argument values before copying the data
+=======
 >>>>>>> 498ae988d894... radio-iris: check argument values before copying the data
 =======
 >>>>>>> 498ae988d894... radio-iris: check argument values before copying the data
