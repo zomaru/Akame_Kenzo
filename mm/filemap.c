@@ -591,32 +591,6 @@ void add_page_wait_queue(struct page *page, wait_queue_t *waiter)
 }
 EXPORT_SYMBOL_GPL(add_page_wait_queue);
 
-<<<<<<< HEAD
-=======
-#ifndef clear_bit_unlock_is_negative_byte
-
-/*
- * PG_waiters is the high bit in the same byte as PG_lock.
- *
- * On x86 (and on many other architectures), we can clear PG_lock and
- * test the sign bit at the same time. But if the architecture does
- * not support that special operation, we just do this all by hand
- * instead.
- *
- * The read of PG_waiters has to be after (or concurrently with) PG_locked
- * being cleared, but a memory barrier should be unneccssary since it is
- * in the same byte as PG_locked.
- */
-static inline bool clear_bit_unlock_is_negative_byte(long nr, volatile void *mem)
-{
-	clear_bit_unlock(nr, mem);
-	/* smp_mb__after_atomic(); */
-	return test_bit(PG_waiters, mem);
-}
-
-#endif
-
->>>>>>> 98473f9f3f9b... mm/filemap: fix parameters to test_bit()
 /**
  * unlock_page - unlock a locked page
  * @page: the page

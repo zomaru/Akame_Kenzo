@@ -41,7 +41,6 @@
  * The module space lives between the addresses given by TASK_SIZE
  * and PAGE_OFFSET - it must be within 128MB of the kernel text.
  */
-<<<<<<< HEAD
 #ifdef CONFIG_ARM64_64K_PAGES
 #define VA_BITS			(42)
 #else
@@ -51,21 +50,6 @@
 #define MODULES_END		(PAGE_OFFSET)
 #define MODULES_VADDR		(MODULES_END - SZ_64M)
 #define FIXADDR_TOP		(MODULES_VADDR - SZ_2M - PAGE_SIZE)
-=======
-#define VA_BITS			(CONFIG_ARM64_VA_BITS)
-#define VA_START		(UL(0xffffffffffffffff) - \
-	(UL(1) << VA_BITS) + 1)
-#define PAGE_OFFSET		(UL(0xffffffffffffffff) - \
-	(UL(1) << (VA_BITS - 1)) + 1)
-#define KIMAGE_VADDR		(MODULES_END)
-#define MODULES_END		(MODULES_VADDR + MODULES_VSIZE)
-#define MODULES_VADDR		(VA_START + KASAN_SHADOW_SIZE)
-#define MODULES_VSIZE		(SZ_128M)
-#define VMEMMAP_START		(PAGE_OFFSET - VMEMMAP_SIZE)
-#define PCI_IO_END		(VMEMMAP_START - SZ_2M)
-#define PCI_IO_START		(PCI_IO_END - PCI_IO_SIZE)
-#define FIXADDR_TOP		(PCI_IO_START - SZ_2M)
->>>>>>> 82cd58805281... arm64: avoid overflow in VA_START and PAGE_OFFSET
 #define TASK_SIZE_64		(UL(1) << VA_BITS)
 
 #ifdef CONFIG_COMPAT
