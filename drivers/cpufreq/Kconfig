@@ -1,0 +1,609 @@
+menu "CPU Frequency scaling"
+
+config CPU_FREQ
+	bool "CPU Frequency scaling"
+	help
+	  CPU Frequency scaling allows you to change the clock speed of 
+	  CPUs on the fly. This is a nice method to save power, because 
+	  the lower the CPU clock speed, the less power the CPU consumes.
+
+	  Note that this driver doesn't automatically change the CPU
+	  clock speed, you need to either enable a dynamic cpufreq governor
+	  (see below) after boot, or use a userspace tool.
+
+	  For details, take a look at <file:Documentation/cpu-freq>.
+
+	  If in doubt, say N.
+
+if CPU_FREQ
+
+config CPU_FREQ_GOV_COMMON
+	bool
+
+config SCHED_FREQ_INPUT
+	bool "Scheduler inputs to cpufreq governor"
+	depends on SCHED_HMP
+	help
+	  This option enables support for scheduler based CPU utilization
+	  calculations which may then be used by any cpufreq governor. The
+	  scheduler keeps track of "recent" cpu demand of tasks, which can
+	  help determine need for changing frequency well in advance of what
+	  a governor would have been able to detect on its own.
+
+config CPU_FREQ_STAT
+	tristate "CPU frequency translation statistics"
+	default y
+	help
+	  This driver exports CPU frequency statistics information through sysfs
+	  file system.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_stats.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_STAT_DETAILS
+	bool "CPU frequency translation statistics details"
+	depends on CPU_FREQ_STAT
+	help
+	  This will show detail CPU frequency translation table in sysfs file
+	  system.
+
+	  If in doubt, say N.
+
+choice
+	prompt "Default CPUFreq governor"
+	default CPU_FREQ_DEFAULT_GOV_USERSPACE if ARM_SA1100_CPUFREQ || ARM_SA1110_CPUFREQ
+	default CPU_FREQ_DEFAULT_GOV_PERFORMANCE
+	help
+	  This option sets which CPUFreq governor shall be loaded at
+	  startup. If in doubt, select 'performance'.
+
+config CPU_FREQ_DEFAULT_GOV_PERFORMANCE
+	bool "performance"
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Use the CPUFreq governor 'performance' as default. This sets
+	  the frequency statically to the highest frequency supported by
+	  the CPU.
+
+config CPU_FREQ_DEFAULT_GOV_POWERSAVE
+	bool "powersave"
+	depends on EXPERT
+	select CPU_FREQ_GOV_POWERSAVE
+	help
+	  Use the CPUFreq governor 'powersave' as default. This sets
+	  the frequency statically to the lowest frequency supported by
+	  the CPU.
+
+config CPU_FREQ_DEFAULT_GOV_AKAME
+	bool "akame"
+	select CPU_FREQ_GOV_AKAME
+	help
+	  The red-eyed killer is back to kill your device!
+	  sigh, i was joking..
+	  This is the new, ongoing development cpu governor
+	  Hope you like it.
+
+config CPU_FREQ_DEFAULT_GOV_MURASAME
+	bool "murasame"
+	select CPU_FREQ_GOV_MURASAME
+	---help---
+	  A perfect combo for the cold-blooded red eyed killer!
+	  This is a demonic cpu governor that will leaves your phone broken.
+	  I was joking at that, though.
+
+config CPU_FREQ_DEFAULT_GOV_WHEATLEY
+	bool "wheatley"
+	select CPU_FREQ_GOV_WHEATLEY
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Use the CPUFreq governor 'wheatley' as default.
+
+config CPU_FREQ_DEFAULT_GOV_SMARTASSH3
+	bool "smartassH3"
+	select CPU_FREQ_GOV_SMARTASSH3
+	help
+	  Use the CPUFreq governor 'smartassH3' as default.
+
+config CPU_FREQ_DEFAULT_GOV_INTELLIDEMAND
+	bool "intellidemand"
+	select CPU_FREQ_GOV_INTELLIDEMAND
+	help
+	  Use the CPUFreq governor 'intellidemand' as default. This is
+	  based on Ondemand with browsing detection based on GPU loading
+	  
+config CPU_FREQ_DEFAULT_GOV_INTERACTIVEX
+	bool "interactiveX"
+	select CPU_FREQ_GOV_INTERACTIVEX
+	help
+	  Use the CPUFreq governor 'interactiveX' as default. This allows
+	  you to get a full dynamic cpu frequency capable system by simply
+	  loading your cpufreq low-level hardware driver, using the
+	  'interactiveX' governor for latency-sensitive workloads.
+
+config CPU_FREQ_DEFAULT_GOV_DANCEDANCE
+	bool "dancedance"
+	select CPU_FREQ_GOV_DANCEDANCE
+	help
+
+config CPU_FREQ_DEFAULT_GOV_LIONHEART
+	bool "lionheart"
+	select CPU_FREQ_GOV_LIONHEART
+	help
+	 Use the CPUFreq governor 'lionheart' as default.
+	 
+config CPU_FREQ_DEFAULT_GOV_INTELLIDEMAND
+	bool "intellidemand"
+	select CPU_FREQ_GOV_INTELLIDEMAND
+	help
+	  Use the CPUFreq governor 'intellidemand' as default. This is
+
+
+config CPU_FREQ_DEFAULT_GOV_USERSPACE
+	bool "userspace"
+	select CPU_FREQ_GOV_USERSPACE
+	help
+	  Use the CPUFreq governor 'userspace' as default. This allows
+	  you to set the CPU frequency manually or when a userspace 
+	  program shall be able to set the CPU dynamically without having
+	  to enable the userspace governor manually.
+
+config CPU_FREQ_DEFAULT_GOV_ONDEMAND
+	bool "ondemand"
+	select CPU_FREQ_GOV_ONDEMAND
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Use the CPUFreq governor 'ondemand' as default. This allows
+	  you to get a full dynamic frequency capable system by simply
+	  loading your cpufreq low-level hardware driver.
+	  Be aware that not all cpufreq drivers support the ondemand
+	  governor. If unsure have a look at the help section of the
+	  driver. Fallback governor will be the performance governor.
+
+config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
+	bool "conservative"
+	select CPU_FREQ_GOV_CONSERVATIVE
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Use the CPUFreq governor 'conservative' as default. This allows
+	  you to get a full dynamic frequency capable system by simply
+	  loading your cpufreq low-level hardware driver.
+	  Be aware that not all cpufreq drivers support the conservative
+	  governor. If unsure have a look at the help section of the
+	  driver. Fallback governor will be the performance governor.
+
+config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
+	bool "interactive"
+	select CPU_FREQ_GOV_INTERACTIVE
+	help
+	  Use the CPUFreq governor 'interactive' as default. This allows
+	  you to get a full dynamic cpu frequency capable system by simply
+	  loading your cpufreq low-level hardware driver, using the
+	  'interactive' governor for latency-sensitive workloads.
+
+endchoice
+
+config CPU_FREQ_GOV_PERFORMANCE
+	tristate "'performance' governor"
+	help
+	  This cpufreq governor sets the frequency statically to the
+	  highest available CPU frequency.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_performance.
+
+	  If in doubt, say Y.
+
+config CPU_FREQ_GOV_POWERSAVE
+	tristate "'powersave' governor"
+	help
+	  This cpufreq governor sets the frequency statically to the
+	  lowest available CPU frequency.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_powersave.
+
+	  If in doubt, say Y.
+
+config CPU_FREQ_GOV_USERSPACE
+	tristate "'userspace' governor for userspace frequency scaling"
+	help
+	  Enable this cpufreq governor when you either want to set the
+	  CPU frequency manually or when a userspace program shall
+	  be able to set the CPU dynamically, like on LART 
+	  <http://www.lartmaker.nl/>.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_userspace.
+
+	  For details, take a look at <file:Documentation/cpu-freq/>.
+
+	  If in doubt, say Y.
+
+config CPU_FREQ_GOV_AKAME
+
+	tristate "'akame'the red-eyed killer's CPU Governor"
+	help
+	  More pain, more blood. Akame-chan is now running on your system!
+	  would you mind to please her?
+	  or else, homeru.
+	  
+	  Untuk meng-compile driver ini sebagai module, pilih M
+	  module ini akan dinamakan cpufreq_akame.
+
+	  Detil lebih lanjut silahkan lihat di linux/Documentation/cpu-freq.
+
+	  Jika anda ragu, lambaikan tangan ke kamera dan pilih N.
+	  
+config AKAME_SLEEP_IDEAL_FREQ
+	int "The ideal frequency to use when awake."
+	default 1190400
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  The "ideal" frequency to use when awake. The governor will ramp up faster
+	  towards the ideal frequency and slower after it has passed it. Similarly,
+	  lowering the frequency towards the ideal frequency is faster than below it.
+
+config AKAME_AWAKE_IDEAL_FREQ
+	int "The ideal frequency to use when suspended."
+	default 400000
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  The "ideal" frequency to use when suspended.
+	  When set to 0, the governor will not track the suspended state (meaning
+	  that practically when sleep_ideal_freq==0 the awake_ideal_freq is used
+	  also when suspended).
+
+config AKAME_FREQ_AWAKE_MIN
+	int "Min Awake frequeny"
+	default 400000
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  Min freqeuncy for screen on.
+
+config AKAME_FREQ_STEP_UP_SLEEP_PERCENT
+	int "Freq step up percent sleep"
+	default 20
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  Frequency percent to step up while screen off.
+
+config AKAME_FREQ_SLEEP_MAX
+	int "Max Sleep frequency"
+	default 400000
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  Max frequency for screen off.
+
+config AKAME_RAMP_UP_STEP
+	int "Frequency delta when ramping up above the ideal frequency."
+	default 256000
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  Freqeuncy delta when ramping up above the ideal freqeuncy.
+	  Zero disables and causes to always jump straight to max frequency.
+	  When below the ideal freqeuncy we always ramp up to the ideal freq.
+
+config AKAME_RAMP_DOWN_STEP
+	int "Frequency delta when ramping down below the ideal frequency."
+	default 256000
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  Freqeuncy delta when ramping down below the ideal freqeuncy.
+	  Zero disables and will calculate ramp down according to load heuristic.
+	  When above the ideal freqeuncy we always ramp down to the ideal freq.
+
+config AKAME_MAX_CPU_LOAD
+	int "CPU freq will be increased if measured load > max_cpu_load."
+	default 50
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  CPU freq will be increased if measured load > max_cpu_load.
+
+config AKAME_MIN_CPU_LOAD
+	int "CPU freq will be decreased if measured load < max_cpu_load."
+	default 25
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  CPU freq will be decreased if measured load < max_cpu_load.
+
+config AKAME_UP_RATE_US
+	int "The minimum amount of time to spend at a frequency before we can ramp up."
+	default 48000
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  The minimum amount of time to spend at a frequency before we can ramp up.
+	  Notice we ignore this when we are below the ideal frequency.
+
+config AKAME_DOWN_RATE_US
+	int "The minimum amount of time to spend at a frequency before we can ramp down."
+	default 99000
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  The minimum amount of time to spend at a frequency before we can ramp down.
+	  Notice we ignore this when we are below the ideal frequency.
+	  
+config AKAME_SYNC_THRESHOLD
+	int "The amount of frequency when the cpu loading is above the preset threshold"
+	default 1305000
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  When the cpu loads across the preset threshold frequency, the frequency will be raised
+	  as much as the defined amount.
+	  
+config AKAME_SCHED_BOOST
+	int "To enable or disable sched boost when an input is coming."
+	default 1
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  When an input is present, this will enable the sched boost on the cpu
+	  this is active when the phone has been wake up from sleep
+
+config AKAME_SLEEP_WAKEUP_FREQ
+	int "The frequency to set when waking up from sleep."
+	default 1248000
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  The frequency to set when waking up from sleep.
+	  When sleep_ideal_freq=0 this will have no effect.
+
+config SMARTASSV2_SAMPLE_RATE_JIFFIES
+	int "Sampling rate."
+	default 2
+	depends on CPU_FREQ_GOV_AKAME
+	help
+	  Sampling rate, I highly recommend to leave it at 2.
+	  
+config CPU_FREQ_GOV_INTELLIDEMAND
+	tristate "'intellidemand' cpufreq policy governor"
+	select CPU_FREQ_TABLE
+	help
+	  'intellidemand' - This driver adds a dynamic cpufreq policy governor.
+	  The governor does a periodic polling and
+	  changes frequency based on the CPU utilization.
+	  The support for this governor depends on CPU capability to
+	  do fast frequency switching (i.e, very low latency frequency
+	  transitions). with browsing detection based on GPU loading
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_ondemand.
+
+	  For details, take a look at linux/Documentation/cpu-freq.
+
+	  If in doubt, say N.
+	  
+config CPU_FREQ_GOV_INTERACTIVEX
+	tristate "'interactiveX' cpufreq policy governor"
+	help
+	  'interactiveX' - Modified version of interactive with sleep+wake code.
+
+	   If in doubt, say N.
+	   
+config CPU_FREQ_GOV_WHEATLEY
+	tristate "'wheatley' cpufreq governor"
+	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_DANCEDANCE
+	tristate "'dancedance' cpufreq governor"
+	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_LIONHEART
+	tristate "lionheart"
+	depends on CPU_FREQ
+	help
+	 Use the CPUFreq governor 'lionheart' as default.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_MURASAME
+	tristate "'murasame' is the demon sword that akame wield"
+	help
+	  'murasame' - Hailed as a sword that leaves uncurable injury,
+	  when it comes to tear off your device, it will never comes back as it was before
+	  Akame loves this sword as much as i loves her
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_adaptive.
+
+	  For details, take a look at linux/Documentation/cpu-freq.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_INTELLIMM
+        tristate "'intelliminmax' cpufreq policy governor"
+        help
+          To compile this driver as a module, choose M here: the
+          module will be called cpufreq_interactive.
+
+          For details, take a look at linux/Documentation/cpu-freq.
+
+          If in doubt, say N.
+          
+config CPU_FREQ_GOV_SMARTASSH3
+	tristate "'smartassH3' cpufreq governor"
+	depends on CPU_FREQ
+	help
+    		'smartassH3' - a "smart" governor
+
+config CPU_FREQ_GOV_ONDEMAND
+	tristate "'ondemand' cpufreq policy governor"
+	select CPU_FREQ_GOV_COMMON
+	help
+	  'ondemand' - This driver adds a dynamic cpufreq policy governor.
+	  The governor does a periodic polling and 
+	  changes frequency based on the CPU utilization.
+	  The support for this governor depends on CPU capability to
+	  do fast frequency switching (i.e, very low latency frequency
+	  transitions). 
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_ondemand.
+
+	  For details, take a look at linux/Documentation/cpu-freq.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_INTERACTIVE
+	tristate "'interactive' cpufreq policy governor"
+	help
+	  'interactive' - This driver adds a dynamic cpufreq policy governor
+	  designed for latency-sensitive workloads.
+
+	  This governor attempts to reduce the latency of clock
+	  increases so that the system is more responsive to
+	  interactive workloads.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_interactive.
+
+	  For details, take a look at linux/Documentation/cpu-freq.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_CONSERVATIVE
+	tristate "'conservative' cpufreq governor"
+	depends on CPU_FREQ
+	select CPU_FREQ_GOV_COMMON
+	help
+	  'conservative' - this driver is rather similar to the 'ondemand'
+	  governor both in its source code and its purpose, the difference is
+	  its optimisation for better suitability in a battery powered
+	  environment.  The frequency is gracefully increased and decreased
+	  rather than jumping to 100% when speed is required.
+
+	  If you have a desktop machine then you should really be considering
+	  the 'ondemand' governor instead, however if you are using a laptop,
+	  PDA or even an AMD64 based computer (due to the unacceptable
+	  step-by-step latency issues between the minimum and maximum frequency
+	  transitions in the CPU) you will probably want to use this governor.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called cpufreq_conservative.
+
+	  For details, take a look at linux/Documentation/cpu-freq.
+
+	  If in doubt, say N.
+
+config CPU_BOOST
+	tristate "Event base short term CPU freq boost"
+	depends on CPU_FREQ
+	help
+	  This driver boosts the frequency of one or more CPUs based on
+	  various events that might occur in the system. As of now, the
+	  events it reacts to are:
+	  - Migration of important threads from one CPU to another.
+
+	  If in doubt, say N.
+
+config GENERIC_CPUFREQ_CPU0
+	tristate "Generic CPU0 cpufreq driver"
+	depends on HAVE_CLK && REGULATOR && PM_OPP && OF
+	help
+	  This adds a generic cpufreq driver for CPU0 frequency management.
+	  It supports both uniprocessor (UP) and symmetric multiprocessor (SMP)
+	  systems which share clock and voltage across all CPUs.
+
+	  If in doubt, say N.
+
+menu "x86 CPU frequency scaling drivers"
+depends on X86
+source "drivers/cpufreq/Kconfig.x86"
+endmenu
+
+menu "ARM CPU frequency scaling drivers"
+depends on ARM || ARM64
+source "drivers/cpufreq/Kconfig.arm"
+endmenu
+
+menu "AVR32 CPU frequency scaling drivers"
+depends on AVR32
+
+config AVR32_AT32AP_CPUFREQ
+	bool "CPU frequency driver for AT32AP"
+	depends on PLATFORM_AT32AP
+	default n
+	help
+	  This enables the CPU frequency driver for AT32AP processors.
+	  If in doubt, say N.
+
+endmenu
+
+menu "CPUFreq processor drivers"
+depends on IA64
+
+config IA64_ACPI_CPUFREQ
+	tristate "ACPI Processor P-States driver"
+	depends on ACPI_PROCESSOR
+	help
+	This driver adds a CPUFreq driver which utilizes the ACPI
+	Processor Performance States.
+
+	For details, take a look at <file:Documentation/cpu-freq/>.
+
+	If in doubt, say N.
+
+endmenu
+
+menu "MIPS CPUFreq processor drivers"
+depends on MIPS
+
+config LOONGSON2_CPUFREQ
+	tristate "Loongson2 CPUFreq Driver"
+	help
+	  This option adds a CPUFreq driver for loongson processors which
+	  support software configurable cpu frequency.
+
+	  Loongson2F and it's successors support this feature.
+
+	  For details, take a look at <file:Documentation/cpu-freq/>.
+
+	  If in doubt, say N.
+
+endmenu
+
+menu "PowerPC CPU frequency scaling drivers"
+depends on PPC32 || PPC64
+source "drivers/cpufreq/Kconfig.powerpc"
+endmenu
+
+menu "SPARC CPU frequency scaling drivers"
+depends on SPARC64
+config SPARC_US3_CPUFREQ
+	tristate "UltraSPARC-III CPU Frequency driver"
+	help
+	  This adds the CPUFreq driver for UltraSPARC-III processors.
+
+	  For details, take a look at <file:Documentation/cpu-freq>.
+
+	  If in doubt, say N.
+
+config SPARC_US2E_CPUFREQ
+	tristate "UltraSPARC-IIe CPU Frequency driver"
+	help
+	  This adds the CPUFreq driver for UltraSPARC-IIe processors.
+
+	  For details, take a look at <file:Documentation/cpu-freq>.
+
+	  If in doubt, say N.
+endmenu
+
+menu "SH CPU Frequency scaling"
+depends on SUPERH
+config SH_CPU_FREQ
+	tristate "SuperH CPU Frequency driver"
+	help
+	  This adds the cpufreq driver for SuperH. Any CPU that supports
+	  clock rate rounding through the clock framework can use this
+	  driver. While it will make the kernel slightly larger, this is
+	  harmless for CPUs that don't support rate rounding. The driver
+	  will also generate a notice in the boot log before disabling
+	  itself if the CPU in question is not capable of rate rounding.
+
+	  For details, take a look at <file:Documentation/cpu-freq>.
+
+	  If unsure, say N.
+endmenu
+
+endif
+endmenu
