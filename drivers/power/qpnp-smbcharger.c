@@ -2,6 +2,8 @@
  * Copyright (C) 2016 XiaoMi, Inc.
  * Copyright (C) 2017 Renaldy P <aerozox01@gmail.com>
  * 
+ * Tuning the current output at the maximum safe threshold for the phone
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
  * only version 2 as published by the Free Software Foundation.
@@ -399,19 +401,19 @@ module_param_named(
 	int, S_IRUSR | S_IWUSR
 );
 
-static int smbchg_default_hvdcp_icl_ma = 2500;
+static int smbchg_default_hvdcp_icl_ma = 2150;
 module_param_named(
 	default_hvdcp_icl_ma, smbchg_default_hvdcp_icl_ma,
 	int, S_IRUSR | S_IWUSR
 );
 
-static int smbchg_default_hvdcp3_icl_ma = 2650;
+static int smbchg_default_hvdcp3_icl_ma = 2250;
 module_param_named(
 	default_hvdcp3_icl_ma, smbchg_default_hvdcp3_icl_ma,
 	int, S_IRUSR | S_IWUSR
 );
 
-static int smbchg_default_dcp_icl_ma = 2250;
+static int smbchg_default_dcp_icl_ma = 2050;
 module_param_named(
 	default_dcp_icl_ma, smbchg_default_dcp_icl_ma,
 	int, S_IRUSR | S_IWUSR
@@ -5441,7 +5443,7 @@ static int smbchg_dp_dm(struct smbchg_chip *chip, int val)
 	return rc;
 }
 
-#define CHARGE_OUTPUT_VTG_RATIO		1000
+#define CHARGE_OUTPUT_VTG_RATIO		882
 static int smbchg_get_iusb(struct smbchg_chip *chip)
 {
 	int rc, iusb_ua = -EINVAL;
@@ -6987,7 +6989,7 @@ err:
 }
 
 #define DEFAULT_VLED_MAX_UV		3500000
-#define DEFAULT_FCC_MA			2200
+#define DEFAULT_FCC_MA			2100
 static int smb_parse_dt(struct smbchg_chip *chip)
 {
 	int rc = 0, ocp_thresh = -EINVAL;

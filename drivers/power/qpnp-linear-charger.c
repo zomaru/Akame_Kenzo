@@ -993,9 +993,9 @@ static int qpnp_lbc_vinmin_set(struct qpnp_lbc_chip *chip, int voltage)
 	return rc;
 }
 
-#define QPNP_LBC_IBATSAFE_MIN_MA	90
-#define QPNP_LBC_IBATSAFE_MAX_MA	1440
-#define QPNP_LBC_I_STEP_MA		90
+#define QPNP_LBC_IBATSAFE_MIN_MA	95
+#define QPNP_LBC_IBATSAFE_MAX_MA	1575
+#define QPNP_LBC_I_STEP_MA		95
 static int qpnp_lbc_ibatsafe_set(struct qpnp_lbc_chip *chip, int safe_current)
 {
 	u8 reg_val;
@@ -1019,8 +1019,8 @@ static int qpnp_lbc_ibatsafe_set(struct qpnp_lbc_chip *chip, int safe_current)
 	return rc;
 }
 
-#define QPNP_LBC_IBATMAX_MIN	90
-#define QPNP_LBC_IBATMAX_MAX	1440
+#define QPNP_LBC_IBATMAX_MIN	95
+#define QPNP_LBC_IBATMAX_MAX	1575
 /*
  * Set maximum current limit from charger
  * ibat =  System current + charging current
