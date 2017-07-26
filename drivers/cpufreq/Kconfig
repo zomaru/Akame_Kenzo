@@ -85,14 +85,6 @@ config CPU_FREQ_DEFAULT_GOV_AKAME
 	  This is the new, ongoing development cpu governor
 	  Hope you like it.
 
-config CPU_FREQ_DEFAULT_GOV_MURASAME
-	bool "murasame"
-	select CPU_FREQ_GOV_MURASAME
-	---help---
-	  A perfect combo for the cold-blooded red eyed killer!
-	  This is a demonic cpu governor that will leaves your phone broken.
-	  I was joking at that, though.
-
 config CPU_FREQ_DEFAULT_GOV_WHEATLEY
 	bool "wheatley"
 	select CPU_FREQ_GOV_WHEATLEY
@@ -348,7 +340,7 @@ config AKAME_SLEEP_WAKEUP_FREQ
 	  The frequency to set when waking up from sleep.
 	  When sleep_ideal_freq=0 this will have no effect.
 
-config SMARTASSV2_SAMPLE_RATE_JIFFIES
+config AKAME_SAMPLE_RATE_JIFFIES
 	int "Sampling rate."
 	default 2
 	depends on CPU_FREQ_GOV_AKAME
@@ -393,20 +385,6 @@ config CPU_FREQ_GOV_LIONHEART
 	depends on CPU_FREQ
 	help
 	 Use the CPUFreq governor 'lionheart' as default.
-
-	  If in doubt, say N.
-
-config CPU_FREQ_GOV_MURASAME
-	tristate "'murasame' is the demon sword that akame wield"
-	help
-	  'murasame' - Hailed as a sword that leaves uncurable injury,
-	  when it comes to tear off your device, it will never comes back as it was before
-	  Akame loves this sword as much as i loves her
-
-	  To compile this driver as a module, choose M here: the
-	  module will be called cpufreq_adaptive.
-
-	  For details, take a look at linux/Documentation/cpu-freq.
 
 	  If in doubt, say N.
 
