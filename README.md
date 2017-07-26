@@ -1,2 +1,2 @@
 # Akame_Kenzo
-Would you please my akame-chan? or else, Homeru.
+Akame Ga Kernel or the Red-Eyed Kernel for Xiaomi Redmi Note 3 Pro
