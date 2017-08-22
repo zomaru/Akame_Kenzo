@@ -16,10 +16,10 @@
 # Please maintain this if you use this script or any part of it
 #
 
-# sesuaikan dengan repository mana yang mau di-clone
+# sesuaikan dengan link repo yang mau di-clone
 git clone https://github.com/zomaru/Akame_Kenzo/
 
-# ganti Akame_Kenzo dengan nama direktori yang sudah selesai di-clone
+# ganti Akame_Kenzo dengan nama direktori dari source code kernel yang sudah selesai di-clone
 cd Akame_Kenzo
 
 # sesuaikan dengan device
@@ -34,5 +34,6 @@ make savedefconfig
 make
 make dtbs
 make modules
+
 # gunakan make clean jika kalian ingin compile ulang, jika tidak hapus saja.
 make clean
