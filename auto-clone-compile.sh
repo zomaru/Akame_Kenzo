@@ -17,7 +17,7 @@
 #
 
 # sesuaikan dengan link repo yang mau di-clone
-git clone https://github.com/zomaru/Akame_Kenzo/
+git clone https://github.com/zomaru/Akame_Kenzo
 
 # ganti Akame_Kenzo dengan nama direktori dari source code kernel yang sudah selesai di-clone
 cd Akame_Kenzo
@@ -27,6 +27,10 @@ export ARCH=arm64
 
 # sesuaikan dengan path compiler kalian
 export CROSS_COMPILE=/path/menuju/compiler
+
+# contoh
+# export CROSS_COMPILE=/home/toolchain/bin/aarch64-linux-android-
+# perhatikan penulisan prefix untuk toolchain, akhiri dengan - seperti contoh diatas
 
 # sesuaikan dengan defconfig device kalian
 make kenzo_defconfig
