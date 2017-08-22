@@ -26,11 +26,10 @@ cd Akame_Kenzo
 export ARCH=arm64
 
 # sesuaikan dengan path compiler kalian
-export CROSS_COMPILE=/path/menuju/compiler
-
 # contoh
 # export CROSS_COMPILE=/home/toolchain/bin/aarch64-linux-android-
 # perhatikan penulisan prefix untuk toolchain, akhiri dengan - seperti contoh diatas
+export CROSS_COMPILE=/path/menuju/compiler
 
 # sesuaikan dengan defconfig device kalian
 make kenzo_defconfig
