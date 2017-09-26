@@ -1,11 +1,7 @@
 VERSION = 3
 PATCHLEVEL = 10
 SUBLEVEL = 105
-<<<<<<< HEAD
 EXTRAVERSION =Akame_Ga_Kernel
-=======
-EXTRAVERSION =
->>>>>>> ec55e7c2bf49... Linux 3.10.105
 NAME = TOSSUG Baby Fish
 
 # *DOCUMENTATION*
